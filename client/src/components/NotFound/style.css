@@ -1,0 +1,7 @@
+.not-found {
+  h3 {
+    font-size: 1.5rem;
+    color: var(--tg-theme-text-color);
+    margin-bottom: 1rem;
+  }
+}
