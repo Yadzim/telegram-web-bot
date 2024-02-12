@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+
+
+/* ----------------- table action (view, edit, delete) style ------------------ */
+.actions{
+  min-width: 70px;
+  max-width: 150px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  /* color: $text; */
+}
+.actions .view{
+  font-size: 15px;
+  cursor: pointer;
+}
+.actions .edit{
+  font-size: 15px;
+  cursor: pointer;
+}
+.actions .delete{
+  font-size: 15px;
+  cursor: pointer;
+  color: rgb(243, 52, 52);
+}
+
+.actions_th{
+  min-width: 70px;
+  max-width: 150px;
+}
+
+.table_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 786px) {
+      display: block;
+      text-align: center;
+      & > div:nth-child(1) {
+          margin-bottom: 10px;
+      }
+  }
+}
+
+
+/* ------------------- antd style ------------------------------- */
+
+/* .ant-pagination .ant-pagination-item, .ant-select-selector, input{
+    background-color: #fff !important;
+    border-color: #d9d9d9;
+
+}
+.ant-pagination .ant-pagination-item-active {
+  border-color: #2f54eb;
+}
+
+.ant-drawer-content-wrapper{
+  max-width: 90% !important;
+} */
+
+.scroll-style {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+.scroll-style::-webkit-scrollbar {
+   width: 7px;
+}
+
+.scroll-style::-webkit-scrollbar-track {
+   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
+   border-radius: 10px;
+}
+
+.scroll-style::-webkit-scrollbar-thumb {
+   border-radius: 10px;
+   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
