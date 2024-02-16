@@ -22,8 +22,8 @@ const Header = () => {
         Lizard
         {user?.username}
       </Typography>
-      <Button>
-        <Badge badgeContent={store.items?.length} color='success'>
+      <Button color='simple'>
+        <Badge badgeContent={store.items?.length} color='primary'>
           <FaShoppingCart fontSize={24} />
         </Badge>
       </Button>

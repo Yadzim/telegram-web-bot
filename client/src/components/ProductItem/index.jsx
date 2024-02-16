@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./ProductItem.css";
 // import Button from "../Buttons/Button";
 import {
@@ -9,6 +9,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import image from "../../assets/images/product_2.jpg";
@@ -20,21 +21,28 @@ const ProductItem = ({ product, className, onAdd }) => {
     onAdd(product);
   };
 
+  const [imageLoad, setImageLoad] = useState(false);
   const store = useContext(CartContext);
   const productQuantity = store?.getProductQuantity(product?._id);
 
-  console.log(productQuantity);
+  console.log(store.items);
 
   return (
     <>
       <Card className='product- rounded-2xl'>
         <CardActionArea>
+          {!imageLoad ? (
+            <Skeleton variant='rounded' width={"100%"} height={140} />
+          ) : null}
           <CardMedia
             component='img'
             height='140'
             image={"https://quronhusnixati.uz/static/" + product?.image}
             alt='green iguana'
             title=''
+            onLoad={() => {
+              setImageLoad(true);
+            }}
           />
           <CardContent>
             {/* <Badge badgeContent={productQuantity} color='primary'></Badge> */}
@@ -61,7 +69,7 @@ const ProductItem = ({ product, className, onAdd }) => {
               <Button
                 variant='contained'
                 onClick={() => {
-                  store?.addOneToCart(product?._id);
+                  store?.addOneToCart(product);
                 }}>
                 <FaPlus />
               </Button>
@@ -72,7 +80,7 @@ const ProductItem = ({ product, className, onAdd }) => {
               variant='contained'
               className='bg-yellow-500 w-full'
               onClick={() => {
-                store?.addOneToCart(product?._id);
+                store?.addOneToCart(product);
               }}>
               Savatga qo'shish
             </Button>

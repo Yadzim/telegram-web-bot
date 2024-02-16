@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import "./ProductList.css";
-import ProductItem from "../../components/ProductItem/ProductItem";
+import ProductItem from "../../components/ProductItem";
 import useTelegram from "../../hooks/useTelegram";
 import { Box, Button, Skeleton, Typography } from "@mui/material";
 import { CartContext } from "../../store/orderContext";
@@ -115,7 +115,7 @@ const ProductList = () => {
       </div>
       {store?.items?.length ? (
         <div className='fixed bottom-0 left-1 right-1 py-1'>
-          <Link to={"/orders"}>
+          <Link to={"/order/list"}>
             <Button variant='contained' fullWidth onClick={() => {}}>
               <Typography padding={"4px 0"} variant='h5' component='div'>
                 Xarid qilish

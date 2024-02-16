@@ -1,7 +1,7 @@
 const TelegramBot = require("node-telegram-bot-api");
 const express = require("express");
 const cors = require("cors");
-require('dotenv').config();
+require("dotenv").config();
 
 const token = process.env.BOT_TOKEN;
 const webAppUrl = process.env.WEB_APP_URL;
@@ -59,17 +59,19 @@ const start = () => {
         "A button will appear below, please fill out the form",
         {
           reply_markup: {
-            // keyboard: [
-            //   [
-            //     {
-            //       text: "Fill the form",
-            //       web_app: { url: webAppUrl + "/form" },
-            //     },
-            //   ],
+            // /keyboard: [
+            //  [
+            //  {
+            //  text: "Fill the form",
+            //  web_app: {
+            //   url: "https://telegram-web-app-by-eric.netlify.app/",
+            //   },
+            // },
+            //],
+            //],
+            // inline_keyboard: [
+            //   [{ text: "Make an order", web_app: { url: webAppUrl } }],
             // ],
-            inline_keyboard: [
-              [{ text: "Make an order", web_app: { url: webAppUrl } }],
-            ],
           },
         }
       );

@@ -12,6 +12,7 @@ export const CartContext = createContext({
 
 export function CartProvider({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
+
   function getProductQuantity(id) {
     const quantity = cartProducts.find(
       (product) => product.id === id
@@ -23,21 +24,22 @@ export function CartProvider({ children }) {
     return quantity;
   }
 
-  function addOneToCart(id) {
-    const quantity = getProductQuantity(id);
+  function addOneToCart(payload) {
+    const quantity = getProductQuantity(payload?._id);
 
     if (quantity === 0) {
       setCartProducts([
         ...cartProducts,
         {
-          id: id,
+          id: payload?._id,
+          ...payload,
           quantity: 1,
         },
       ]);
     } else {
       setCartProducts(
         cartProducts.map((product) =>
-          product.id === id
+          product.id === payload?._id
             ? { ...product, quantity: product.quantity + 1 }
             : product
         )
