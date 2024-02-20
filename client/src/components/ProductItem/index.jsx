@@ -17,10 +17,6 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { CartContext } from "../../store/orderContext";
 
 const ProductItem = ({ product, className, onAdd }) => {
-  const onAddHandler = () => {
-    onAdd(product);
-  };
-
   const [imageLoad, setImageLoad] = useState(false);
   const store = useContext(CartContext);
   const productQuantity = store?.getProductQuantity(product?._id);
@@ -62,6 +58,7 @@ const ProductItem = ({ product, className, onAdd }) => {
                 color='error'
                 onClick={() => {
                   store?.removeOneFromCart(product?._id);
+                  onAdd();
                 }}>
                 <FaMinus />
               </Button>
@@ -70,6 +67,7 @@ const ProductItem = ({ product, className, onAdd }) => {
                 variant='contained'
                 onClick={() => {
                   store?.addOneToCart(product);
+                  onAdd();
                 }}>
                 <FaPlus />
               </Button>
@@ -81,6 +79,7 @@ const ProductItem = ({ product, className, onAdd }) => {
               className='bg-yellow-500 w-full'
               onClick={() => {
                 store?.addOneToCart(product);
+                onAdd();
               }}>
               Savatga qo'shish
             </Button>

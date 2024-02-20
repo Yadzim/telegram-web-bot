@@ -19,10 +19,10 @@ const App = () => {
   return (
     <ThemeProvider>
       <div className='max-w-[380px]  bg-[#F9FAFB] mx-auto'>
-        <Header />
+        {/* <Header /> */}
         <Routes>
           <Route index element={<ProductList />} />
-          <Route path='form' element={<Form />} />
+          {/* <Route path='form' element={<Form />} /> */}
           <Route path='/order/list' element={<OrderList />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

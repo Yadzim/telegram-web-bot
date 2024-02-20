@@ -3,10 +3,27 @@ import useTelegram from "../../hooks/useTelegram";
 import { Badge, Box, Button, Typography } from "@mui/material";
 import { FaShoppingCart } from "react-icons/fa";
 import { CartContext } from "../../store/orderContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { user, onClose } = useTelegram();
   const store = useContext(CartContext);
+  const navigate = useNavigate();
+  const { tg } = useTelegram();
+
+  const onClick = () => {
+    navigate("/order/list");
+    // tg.MainButton.show();
+    // tg.MainButton.setParams({
+    //   text: "Savatga o'tish",
+    //   color: "#fbbf24",
+    // });
+    // tg.BackButton.isVisible = true;
+    // tg.SettingsButton.isVisible = true;
+    // tg.SettingsButton.show();
+    // tg.BackButton.show();
+    // tg.PopupButton.text("sdfdsf sdfsdf");
+  };
 
   return (
     <Box
@@ -18,11 +35,14 @@ const Header = () => {
         variant='h5'
         margin={0}
         component='div'
-        className='text-yellow-500 m-0'>
+        className='text-yellow-500 m-0'
+        onClick={() => {
+          navigate("/");
+        }}>
         Lizard
         {user?.username}
       </Typography>
-      <Button color='simple'>
+      <Button color='simple' onClick={onClick}>
         <Badge badgeContent={store.items?.length} color='primary'>
           <FaShoppingCart fontSize={24} />
         </Badge>

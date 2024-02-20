@@ -8,6 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { CartContext } from "../../store/orderContext";
 import { ListItemButton } from "@mui/material";
+import OrderItem from "./components/OrderItem.tsx";
 
 export default function OrderList() {
   const store = React.useContext(CartContext);
@@ -15,7 +16,11 @@ export default function OrderList() {
   return (
     <List
       dense
-      sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      disablePadding
+      sx={{ width: "100%", bgcolor: "background.paper" }}>
+      {store.items?.map((e) => (
+        <OrderItem order={e} />
+      ))}
       <ListItem alignItems='flex-start'>
         <ListItemAvatar>
           <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />

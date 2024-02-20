@@ -4,7 +4,8 @@ import ProductItem from "../../components/ProductItem";
 import useTelegram from "../../hooks/useTelegram";
 import { Box, Button, Skeleton, Typography } from "@mui/material";
 import { CartContext } from "../../store/orderContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Header from "../../components/Header";
 
 const products = [
   { id: "1", title: "Car", description: "Red car", price: 1000 },
@@ -32,25 +33,25 @@ const getTotalPrice = (items = []) => {
 
 const ProductList = () => {
   const [data, setData] = useState([]);
-  const [addedItems, setAddedItems] = useState([]);
   const { tg, queryId } = useTelegram();
+  const navigate = useNavigate();
 
   const store = useContext(CartContext);
 
-  const onSendForm = useCallback(() => {
-    const data = {
-      products: addedItems,
-      totalPrice: getTotalPrice(addedItems),
-      queryId,
-    };
-    fetch("http://localhost:8000", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-  }, []);
+  // const onSendForm = useCallback(() => {
+  //   const data = {
+  //     products: addedItems,
+  //     totalPrice: getTotalPrice(addedItems),
+  //     queryId,
+  //   };
+  //   fetch("http://localhost:8000", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   });
+  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -66,36 +67,32 @@ const ProductList = () => {
   }, []);
 
   useEffect(() => {
-    tg.onEvent("mainButtonClicked", onSendForm);
+    tg.onEvent("mainButtonClicked", () => {
+      navigate("/order/list");
+    });
     return () => {
-      tg.offEvent("mainButtonClicked", onSendForm);
+      tg.offEvent("mainButtonClicked", () => {
+        navigate("/order/list");
+      });
     };
-  }, [onSendForm]);
+  }, []);
 
-  const onAdd = (product) => {
-    const alreadyAdded = addedItems.find((item) => item.id === product.id);
-    let newItems = [];
-
-    if (alreadyAdded) {
-      newItems = addedItems.filter((item) => item.id !== product.id);
-    } else {
-      newItems = [...addedItems, product];
-    }
-
-    setAddedItems(newItems);
-
-    if (newItems.length === 0) {
+  const onAdd = () => {
+    if (!store?.items?.length) {
       tg.MainButton.hide();
     } else {
       tg.MainButton.show();
       tg.MainButton.setParams({
-        text: `By for ${getTotalPrice(newItems)} $`,
+        text: "Savatga o'tish",
+        color: "#fbbf24",
+        textColor: "#fff",
       });
     }
   };
 
   return (
     <div className=''>
+      <Header />
       <div
         className={`list grid grid-cols-2 gap-4 p-2 py-4 bg-[#F1F1F1] ${
           store.items?.length ? "pb-[60px]" : ""
@@ -114,11 +111,11 @@ const ProductList = () => {
             ))}
       </div>
       {store?.items?.length ? (
-        <div className='fixed bottom-0 left-1 right-1 py-1'>
+        <div className='fixed bottom-0 left-1 right-1 py-1-'>
           <Link to={"/order/list"}>
             <Button variant='contained' fullWidth onClick={() => {}}>
               <Typography padding={"4px 0"} variant='h5' component='div'>
-                Xarid qilish
+                Savatga o'tish
               </Typography>
             </Button>
           </Link>
