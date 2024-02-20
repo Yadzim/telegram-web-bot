@@ -39,8 +39,7 @@ const Header = () => {
         onClick={() => {
           navigate("/");
         }}>
-        Lizard
-        {user?.username}
+        {user?.username ?? "User"}
       </Typography>
       <Button color='simple' onClick={onClick}>
         <Badge badgeContent={store.items?.length} color='primary'>

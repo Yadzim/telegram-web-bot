@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Header from "./components/Header";
 import useTelegram from "./hooks/useTelegram";
 import { Route, Routes } from "react-router-dom";
-import Form from "./pages/Form/Form";
+import Form from "./pages/form";
 import NotFound from "./components/NotFound";
 import ProductList from "./pages/productList";
 import ThemeProvider from "./theme";
@@ -22,7 +22,7 @@ const App = () => {
         {/* <Header /> */}
         <Routes>
           <Route index element={<ProductList />} />
-          {/* <Route path='form' element={<Form />} /> */}
+          <Route path='/form' element={<Form />} />
           <Route path='/order/list' element={<OrderList />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

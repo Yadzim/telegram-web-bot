@@ -7,84 +7,60 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { CartContext } from "../../store/orderContext";
-import { ListItemButton } from "@mui/material";
+import { Box, Button, ListItemButton, TextField } from "@mui/material";
 import OrderItem from "./components/OrderItem.tsx";
+import { useNavigate } from "react-router-dom";
+import useTelegram from "../../hooks/useTelegram.js";
 
 export default function OrderList() {
   const store = React.useContext(CartContext);
+  const { tg, queryId, onToggleMainButton, onToggleBackButton } = useTelegram();
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    tg.BackButton.isVisible = true;
+    onToggleBackButton(true, () => {
+      navigate("/")
+    });
+
+    if(store.items.length)
+      onToggleMainButton(true, "To'lovga o'tish", () => {
+        navigate("/form")
+      })
+  }, [])
 
   return (
-    <List
-      dense
-      disablePadding
-      sx={{ width: "100%", bgcolor: "background.paper" }}>
-      {store.items?.map((e) => (
-        <OrderItem order={e} />
-      ))}
-      <ListItem alignItems='flex-start'>
-        <ListItemAvatar>
-          <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
-        </ListItemAvatar>
-        <ListItemButton>
-          <ListItemText
-            primary='Brunch this weekend?'
-            secondary={
-              <React.Fragment>
-                <Typography
-                  sx={{ display: "inline" }}
-                  component='span'
-                  variant='body2'
-                  color='text.primary'>
-                  Ali Connors
-                </Typography>
-                {" — I'll be in your neighborhood doing errands this…"}
-              </React.Fragment>
-            }
+    <div className="">
+      <div className="flex items-center justify-between p-2">
+        <Typography variant='h5' component='div'>
+          Buyurtmalaringiz
+        </Typography>
+        <Button onClick={() => { navigate("/") }} >Edit</Button>
+      </div>
+      <List
+        dense
+        disablePadding
+        sx={{ width: "100%", bgcolor: "background.paper", borderRadius: ".5rem" }}>
+        {store.items?.map((e) => (
+          <OrderItem order={e} />
+        ))}
+      </List>
+      {!store.items?.length ? <Typography variant='span' component='div' textAlign={"center"} margin={".5rem 0"} className="text-red-500" >
+        Savat bo'sh
+      </Typography>
+        : <div className="bg-white mt-4 rounded-lg">
+          <TextField
+            id="standard-multiline-flexible"
+            label="Comment"
+            multiline
+            maxRows={4}
+            // variant="filled"
+            onChange={(e) => { store.setComment(e?.target?.value) }}
+            className="w-full"
           />
-        </ListItemButton>
-      </ListItem>
-      <Divider variant='inset' component='li' />
-      <ListItem alignItems='flex-start'>
-        <ListItemAvatar>
-          <Avatar alt='Travis Howard' src='/static/images/avatar/2.jpg' />
-        </ListItemAvatar>
-        <ListItemText
-          primary='Summer BBQ'
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: "inline" }}
-                component='span'
-                variant='body2'
-                color='text.primary'>
-                to Scott, Alex, Jennifer
-              </Typography>
-              {" — Wish I could come, but I'm out of town this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant='inset' component='li' />
-      <ListItem alignItems='flex-start'>
-        <ListItemAvatar>
-          <Avatar alt='Cindy Baker' src='/static/images/avatar/3.jpg' />
-        </ListItemAvatar>
-        <ListItemText
-          primary='Oui Oui'
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: "inline" }}
-                component='span'
-                variant='body2'
-                color='text.primary'>
-                Sandra Adams
-              </Typography>
-              {" — Do you have Paris recommendations? Have you ever…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-    </List>
+        </div>
+      }
+      <Button onClick={() => {navigate("/form")}} >Form</Button>
+    </div>
   );
 }

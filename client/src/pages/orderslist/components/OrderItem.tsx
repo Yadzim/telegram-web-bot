@@ -30,7 +30,7 @@ const OrderItem = ({ order }) => {
     >
       {/* <ListItem alignItems='flex-start'> */}
       <ListItemAvatar>
-        <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
+        <Avatar alt='Remy Sharp' src={"https://quronhusnixati.uz/static/" + order?.image} />
       </ListItemAvatar>
       <ListItemText
         primary={<b>{order?.name}</b>}
@@ -46,7 +46,7 @@ const OrderItem = ({ order }) => {
           </React.Fragment>
         }
       />
-
+      <b>{order?.quantity}X</b>
       {/* </ListItem> */}
       {/* <Divider variant='inset' component='li' /> */}
 

@@ -3,15 +3,21 @@ import { createContext, useState } from "react";
 
 export const CartContext = createContext({
   items: [],
-  getProductQuantity: () => {},
-  addOneToCart: () => {},
-  removeOneFromCart: () => {},
-  deleteFromCart: () => {},
-  getTotalCost: () => {},
+  data: {},
+  getProductQuantity: () => { },
+  addOneToCart: () => { },
+  removeOneFromCart: () => { },
+  deleteFromCart: () => { },
+  getTotalCost: () => { },
+  getorderProduct: () => { },
+  setComment: () => { },
+  setShipping: () => { },
 });
 
 export function CartProvider({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
+  const [comment, set_Comment] = useState("");
+  const [shipping, setShipping] = useState({});
 
   function getProductQuantity(id) {
     const quantity = cartProducts.find(
@@ -69,21 +75,55 @@ export function CartProvider({ children }) {
     );
   }
   function getTotalCost() {
-    //   let totalCost = 0;
-    //   cartProducts.map((cartItem) => {
-    //     const productData = getProductData(cartItem.id);
-    //     totalCost += productData.price * cartItem.quantity;
-    //   });
-    //   return totalCost;
+      let totalCost = 0;
+      cartProducts.forEach((cartItem) => {
+        totalCost += cartItem.price * cartItem.quantity;
+      });
+      return totalCost;
+  }
+
+  function getOrderProduct() {
+    let data = [];
+    cartProducts?.forEach(e => {
+      data.push({
+        product: e?._id,
+        quantity: e?.quantity
+      })
+    });
+    return data
+  }
+
+  function setComment(e) {
+    set_Comment(e);
+  }
+
+  function setShippingInfo(e) {
+    setShipping({
+      fullName: e?.fullName,
+        phoneNumber: e?.phoneNumber,
+        region: e?.region,
+        district: e?.district,
+        address: e?.address
+    })
   }
 
   const contextValue = {
     items: cartProducts,
+    data: {
+      order: {
+        products: getOrderProduct(),
+        comment,
+        totalPrice: getTotalCost(),
+      },
+      shippingInfo: shipping
+    },
     getProductQuantity,
     addOneToCart,
     removeOneFromCart,
     deleteFromCart,
     getTotalCost,
+    setComment,
+    setShippingInfo
   };
   return (
     <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
