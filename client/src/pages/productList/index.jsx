@@ -14,12 +14,11 @@ const getTotalPrice = (items = []) => {
 };
 
 const ProductList = () => {
-  const [data, setData] = useState([]);
-  const { tg, queryId, onToggleMainButton} = useTelegram();
+  // const [data, setData] = useState([]);
+  const { tg, queryId, onToggleMainButton, onToggleBackButton } = useTelegram();
   const navigate = useNavigate();
 
   const store = useContext(CartContext);
-
   // const onSendForm = useCallback(() => {
   //   const data = {
   //     products: addedItems,
@@ -36,16 +35,18 @@ const ProductList = () => {
   // }, []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch("https://quronhusnixati.uz/product/all");
-        const data = await res.json();
-        console.log(data);
-        setData(data?.products);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
+    if (!store.products?.length) {
+      (async () => {
+        try {
+          const res = await fetch("https://quronhusnixati.uz/product/all");
+          const data = await res.json();
+          console.log(data);
+          store.setProducts(data?.products);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
   }, []);
 
   // useEffect(() => {
@@ -60,22 +61,23 @@ const ProductList = () => {
   // }, []);
 
   useEffect(() => {
+    onToggleBackButton(false);
+    // tg.platform = "Maxsulotlar";
     if (!store?.items?.length) {
-      onToggleMainButton(false)
+      onToggleMainButton(false);
     } else {
-      onToggleMainButton(true, "Savatga o'tish", ()=>{
+      onToggleMainButton(true, "Savatga o'tish", () => {
         navigate("/order/list");
-      })
+      });
     }
-  },[store.items.length]);
+  }, [store.items.length]);
 
   return (
     <div className=''>
       <Header />
-      <div
-        className={`list grid grid-cols-2 gap-4 p-2 py-4 bg-[#F1F1F1]`}>
-        {data?.length
-          ? data.map((product) => (
+      <div className={`list grid grid-cols-2 gap-4 p-2 py-4 bg-[#F1F1F1]`}>
+        {store.products?.length
+          ? store.products.map((product) => (
               <ProductItem product={product} className={"item"} />
             ))
           : [...Array(4)]?.map((e, i) => (

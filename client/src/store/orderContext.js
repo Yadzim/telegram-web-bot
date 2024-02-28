@@ -1,23 +1,51 @@
 import { createContext, useState } from "react";
 // import { productsArray, getProductData } from "./ProductsStore";
 
+export const getAllProduct = async () => {
+  let data = [];
+  try {
+    const res = await fetch("https://quronhusnixati.uz/product/all");
+    const data = await res.json();
+    data = data?.products;
+  } catch (error) {
+    console.log(error);
+  }
+  return data;
+};
+
 export const CartContext = createContext({
+  products: [],
   items: [],
-  data: {},
-  getProductQuantity: () => { },
-  addOneToCart: () => { },
-  removeOneFromCart: () => { },
-  deleteFromCart: () => { },
-  getTotalCost: () => { },
-  getorderProduct: () => { },
-  setComment: () => { },
-  setShipping: () => { },
+  data: {
+    order: {
+      products: [],
+      comment: undefined,
+      totalPrice: 0,
+    },
+    shippingInfo: {
+      fullName: undefined,
+      phoneNumber: undefined,
+      region: undefined,
+      district: undefined,
+      address: undefined,
+    },
+  },
+  getProductQuantity: () => {},
+  addOneToCart: () => {},
+  removeOneFromCart: () => {},
+  deleteFromCart: () => {},
+  getTotalCost: () => {},
+  getorderProduct: () => {},
+  setComment: () => {},
+  setShippingInfo: () => {},
+  setProducts: () => {},
 });
 
 export function CartProvider({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
   const [comment, set_Comment] = useState("");
   const [shipping, setShipping] = useState({});
+  const [products, setProductes] = useState({});
 
   function getProductQuantity(id) {
     const quantity = cartProducts.find(
@@ -75,22 +103,22 @@ export function CartProvider({ children }) {
     );
   }
   function getTotalCost() {
-      let totalCost = 0;
-      cartProducts.forEach((cartItem) => {
-        totalCost += cartItem.price * cartItem.quantity;
-      });
-      return totalCost;
+    let totalCost = 0;
+    cartProducts.forEach((cartItem) => {
+      totalCost += cartItem.price * cartItem.quantity;
+    });
+    return totalCost;
   }
 
   function getOrderProduct() {
     let data = [];
-    cartProducts?.forEach(e => {
+    cartProducts?.forEach((e) => {
       data.push({
         product: e?._id,
-        quantity: e?.quantity
-      })
+        quantity: e?.quantity,
+      });
     });
-    return data
+    return data;
   }
 
   function setComment(e) {
@@ -98,16 +126,18 @@ export function CartProvider({ children }) {
   }
 
   function setShippingInfo(e) {
-    setShipping({
-      fullName: e?.fullName,
-        phoneNumber: e?.phoneNumber,
-        region: e?.region,
-        district: e?.district,
-        address: e?.address
-    })
+    setShipping((p) => ({
+      ...(p ?? {}),
+      ...(e ?? {}),
+    }));
+  }
+
+  function setProducts(data) {
+    setProductes(data);
   }
 
   const contextValue = {
+    products,
     items: cartProducts,
     data: {
       order: {
@@ -115,7 +145,7 @@ export function CartProvider({ children }) {
         comment,
         totalPrice: getTotalCost(),
       },
-      shippingInfo: shipping
+      shippingInfo: shipping,
     },
     getProductQuantity,
     addOneToCart,
@@ -123,7 +153,8 @@ export function CartProvider({ children }) {
     deleteFromCart,
     getTotalCost,
     setComment,
-    setShippingInfo
+    setShippingInfo,
+    setProducts,
   };
   return (
     <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
